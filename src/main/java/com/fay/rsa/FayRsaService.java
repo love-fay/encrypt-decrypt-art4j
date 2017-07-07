@@ -105,55 +105,7 @@ public class FayRsaService {
 		}
 		return false;
 	}
-	
-	/**
-	 * 加密
-	 * @param key 公钥
-	 * @param text
-	 * @return
-	 */
-//	public static byte[] RSAEncode(PublicKey key, byte[] text) {
-//		Cipher cipher;
-//		try {
-//			cipher = Cipher.getInstance(ALGORITHM);
-//			cipher.init(Cipher.ENCRYPT_MODE, key);
-//			return cipher.doFinal(text, 0, 117);
-//		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-//			e.printStackTrace();
-//		} catch (InvalidKeyException e) {
-//			e.printStackTrace();
-//		} catch (IllegalBlockSizeException e) {
-//			e.printStackTrace();
-//		} catch (BadPaddingException e) {
-//			e.printStackTrace();
-//		}
-//		return null;
-//		
-//	}
-	
-	/**
-	 * 解密
-	 * @param key 私钥
-	 * @param encodedText
-	 * @return
-	 */
-//	public static String RSADecode(PrivateKey key, byte[] encodedText) {
-//		try {
-//			Cipher cipher = Cipher.getInstance(ALGORITHM);
-//			cipher.init(Cipher.DECRYPT_MODE, key);
-//			return new String(cipher.doFinal(encodedText));
-//		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-//			e.printStackTrace();
-//		} catch (InvalidKeyException e) {
-//			e.printStackTrace();
-//		} catch (IllegalBlockSizeException e) {
-//			e.printStackTrace();
-//		} catch (BadPaddingException e) {
-//			e.printStackTrace();
-//		}
-//		return null;
-//	}
-	
+
 	/**
 	 * 解密
 	 * @param privateKey
@@ -214,4 +166,52 @@ public class FayRsaService {
         out.close();
         return encryptedData;
     }
+    
+    /**
+	 * 加密
+	 * @param key 公钥
+	 * @param text
+	 * @return
+	 */
+//	public static byte[] RSAEncode(PublicKey key, byte[] text) {
+//		Cipher cipher;
+//		try {
+//			cipher = Cipher.getInstance(ALGORITHM);
+//			cipher.init(Cipher.ENCRYPT_MODE, key);
+//			return cipher.doFinal(text, 0, 117);
+//		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+//			e.printStackTrace();
+//		} catch (InvalidKeyException e) {
+//			e.printStackTrace();
+//		} catch (IllegalBlockSizeException e) {
+//			e.printStackTrace();
+//		} catch (BadPaddingException e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//		
+//	}
+	
+	/**
+	 * 解密
+	 * @param key 私钥
+	 * @param encodedText
+	 * @return
+	 */
+//	public static String RSADecode(PrivateKey key, byte[] encodedText) {
+//		try {
+//			Cipher cipher = Cipher.getInstance(ALGORITHM);
+//			cipher.init(Cipher.DECRYPT_MODE, key);
+//			return new String(cipher.doFinal(encodedText));
+//		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+//			e.printStackTrace();
+//		} catch (InvalidKeyException e) {
+//			e.printStackTrace();
+//		} catch (IllegalBlockSizeException e) {
+//			e.printStackTrace();
+//		} catch (BadPaddingException e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 }
