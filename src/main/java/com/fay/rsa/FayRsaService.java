@@ -12,10 +12,7 @@ import java.security.SignatureException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -27,7 +24,7 @@ public class FayRsaService {
 	
 	public static final String TEXT = "爱死费崇政";
 	
-	public static void main(String[] args) throws NoSuchAlgorithmException {
+	public static void main(String[] args) throws Exception {
 		KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(ALGORITHM);
 		KeyPair keyPair = keyPairGen.generateKeyPair();
 		
@@ -40,13 +37,13 @@ public class FayRsaService {
         System.out.println("公钥>"+publicKeyS);
         System.out.println("私钥>"+privateKeyS);
 
-        byte[] encodedText = RSAEncode(publicKey, TEXT.getBytes());
+        byte[] encodedText = encryptByPublicKey(publicKey, TEXT.getBytes());
         byte[] signature = sign(privateKey, TEXT.getBytes());
         System.out.println("加密>"+new String(encodedText));
         System.out.println("签名>"+new String(signature));
         
-        String decodedText = RSADecode(privateKey, encodedText);
-        boolean signatureVerify = verify(publicKey, signature, decodedText.getBytes());
+        byte[] decodedText = decryptByPrivateKey(privateKey, encodedText);
+        boolean signatureVerify = verify(publicKey, signature, decodedText);
         System.out.println("解密>"+decodedText);
         System.out.println("验签>"+signatureVerify);
 	}
@@ -115,24 +112,24 @@ public class FayRsaService {
 	 * @param text
 	 * @return
 	 */
-	public static byte[] RSAEncode(PublicKey key, byte[] text) {
-		Cipher cipher;
-		try {
-			cipher = Cipher.getInstance(ALGORITHM);
-			cipher.init(Cipher.ENCRYPT_MODE, key);
-			return cipher.doFinal(text, 0, 117);
-		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-			e.printStackTrace();
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (IllegalBlockSizeException e) {
-			e.printStackTrace();
-		} catch (BadPaddingException e) {
-			e.printStackTrace();
-		}
-		return null;
-		
-	}
+//	public static byte[] RSAEncode(PublicKey key, byte[] text) {
+//		Cipher cipher;
+//		try {
+//			cipher = Cipher.getInstance(ALGORITHM);
+//			cipher.init(Cipher.ENCRYPT_MODE, key);
+//			return cipher.doFinal(text, 0, 117);
+//		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+//			e.printStackTrace();
+//		} catch (InvalidKeyException e) {
+//			e.printStackTrace();
+//		} catch (IllegalBlockSizeException e) {
+//			e.printStackTrace();
+//		} catch (BadPaddingException e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//		
+//	}
 	
 	/**
 	 * 解密
@@ -140,23 +137,30 @@ public class FayRsaService {
 	 * @param encodedText
 	 * @return
 	 */
-	public static String RSADecode(PrivateKey key, byte[] encodedText) {
-		try {
-			Cipher cipher = Cipher.getInstance(ALGORITHM);
-			cipher.init(Cipher.DECRYPT_MODE, key);
-			return new String(cipher.doFinal(encodedText));
-		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-			e.printStackTrace();
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (IllegalBlockSizeException e) {
-			e.printStackTrace();
-		} catch (BadPaddingException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	public static String RSADecode(PrivateKey key, byte[] encodedText) {
+//		try {
+//			Cipher cipher = Cipher.getInstance(ALGORITHM);
+//			cipher.init(Cipher.DECRYPT_MODE, key);
+//			return new String(cipher.doFinal(encodedText));
+//		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+//			e.printStackTrace();
+//		} catch (InvalidKeyException e) {
+//			e.printStackTrace();
+//		} catch (IllegalBlockSizeException e) {
+//			e.printStackTrace();
+//		} catch (BadPaddingException e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 	
+	/**
+	 * 解密
+	 * @param privateKey
+	 * @param encryptedData
+	 * @return
+	 * @throws Exception
+	 */
 	public static byte[] decryptByPrivateKey(PrivateKey privateKey, byte[] encryptedData) throws Exception {
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
@@ -180,6 +184,13 @@ public class FayRsaService {
         return decryptedData;
     }
 
+	/**
+	 * 加密
+	 * @param publicKey
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
     public static byte[] encryptByPublicKey(PublicKey publicKey, byte[] data) throws Exception {
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
